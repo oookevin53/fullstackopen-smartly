@@ -1,31 +1,43 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
-const Hello = (props) => {
+const History = (props) => {
+  if (props.allClicks.length === 0) {
+    return (
+      <div>
+        the app is used by pressing the buttons
+      </div>
+    )
+  }
+
   return (
     <div>
-      <p>
-        Hello {props.name}, you are {props.age} years old
-      </p>
+      button press history: {props.allClicks.join(' ')}
     </div>
   )
 }
 
-const App = () => {
-  const name = "Peter"
-  const age = 10
+const Button = ({ onClick, text }) => (
+  <button onClick={onClick}>
+    {text}
+  </button>
+)
 
+const App = (props) => {
+  const [value, setValue] = useState(10)
+  
+  const setToValue = (newValue) => () => {
+    setValue(newValue)
+  }
+  
   return (
-    <>
-      <h1>Greetings</h1>
-      <Hello name="Maya" age={26 + 10}/>
-      <Hello name={name} age={age}/>
-    </>
+    <div>
+      {value}
+      <button onClick={setToValue(1000)}>thousand</button>
+      <button onClick={setToValue(0)}>reset</button>
+      <button onClick={setToValue(value + 1)}>increment</button>
+    </div>
   )
 }
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 
 ReactDOM.render(<App />, document.getElementById('root'))
