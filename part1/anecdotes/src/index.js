@@ -2,11 +2,19 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Button = ({ handleClick, text }) => <><button onClick={handleClick}>{text}</button></>
-const Vote = ({ votes }) => <div>has {votes} votes</div>
+const Vote = ({ anecdote, votes }) => {
+  return (
+    <>
+      <div>{anecdote}</div>
+      <div>has {votes} votes</div>
+    </>
+  )
+}
 
-const App = (props) => {
+const App = ({ anecdotes }) => {
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(new Array(6).fill(0))
+
   console.log(points)
 
   const generateRandom = (min, max) => () => {
@@ -27,10 +35,12 @@ const App = (props) => {
 
   return (
     <div>
-      {props.anecdotes[selected]}
-      <Vote votes={points[selected]} />
+      <h2>Anecdote of the day</h2>
+      <Vote anecdote={anecdotes[selected]} votes={points[selected]} />
       <Button handleClick={addVote(selected)} text="vote"/>
       <Button handleClick={generateRandom(0, anecdotes.length)} text="next anecdote" />
+      <h2>Anecdote with most votes</h2>
+      <Vote anecdote={anecdotes[points.indexOf(Math.max( ...points ))]} votes={points[points.indexOf(Math.max( ...points ))]} />
     </div>
   )
 }
