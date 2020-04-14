@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
+import List from "./components/List"
+import Add from "./components/Add"
+import Search from "./components/Search"
 
 const App = () => {
-  const [ persons, setPersons ] = useState([{ name: 'Arto Hellas', number: '040-1234567' }]) 
+  const [ persons, setPersons ] = useState([
+    { name: 'Arto Hellas', number: '040-1234567' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ search, setSearch ] = useState('')
 
   const addContact = (event) => {
     event.preventDefault()
@@ -21,25 +30,33 @@ const App = () => {
     setNewNumber('')
     }
   }
-  
+
   const handleNewContact = (event) => {
     setNewName(event.target.value)
   }
-  
+
   const handleNewNum = (event) => {
     setNewNumber(event.target.value)
+  }
+
+  const handleSearch = (event) => {
+    setSearch(event.target.value)
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addContact}>
-        <div>name: <input value={newName} onChange={handleNewContact} /></div>
-        <div>number: <input value={newNumber} onChange={handleNewNum} /></div>
-        <div><button type="submit">add</button></div>
-      </form>
-      <h2>Numbers</h2>
-      {persons.map((contact, index) => <div key={index}>{contact.name} {contact.number}</div>)}
+      <Search search={search} handleSearch={handleSearch} />
+      <h3>add a new</h3>
+      <Add 
+        name={newName}
+        number={newNumber}
+        addContact={addContact}
+        handleNewContact={handleNewContact}
+        handleNewNum={handleNewNum}
+      />
+      <h3>Numbers</h3>
+      <List list={persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))} />
     </div>
   )
 }
