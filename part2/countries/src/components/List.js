@@ -16,10 +16,6 @@ const List = ({ countries }) => {
         return (
             <Country country={countries[0]} />
         )
-    } else {
-        return (
-            <div></div>
-        )
     }
 }
 

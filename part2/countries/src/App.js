@@ -22,7 +22,10 @@ function App() {
   return (
     <>
       <Search search={search} handleSearch={handleSearch} />
-      <List countries={countries.filter(country => country.name.toLowerCase().includes(search.toLowerCase()))} />
+      {search
+        ? <List countries={countries.filter(country => country.name.toLowerCase().includes(search.toLowerCase()))} />
+        : <div></div>
+      }
     </>
   );
 }
