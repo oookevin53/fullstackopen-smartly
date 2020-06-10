@@ -47,9 +47,17 @@ const App = () => {
             setPersons(persons.concat(returnedContact))
             setNewName('')
             setNewNumber('')
-          })
-      }
+            })
     }
+  }
+
+  const deleteContactOf = (id, name) => {
+    const result = window.confirm(`Delete ${name} ?`)
+    if (result) {
+      contactService.remove(id)
+      setPersons(persons.filter(person => person.id !== id))
+    }
+  }
 
   return (
     <div>
@@ -64,7 +72,10 @@ const App = () => {
         handleNewNum={handleNewNum}
         />
       <h3>Numbers</h3>
-      <List list={persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))} />
+      <List 
+        list={persons.filter(person => person.name.toLowerCase().includes(search.toLowerCase()))}
+        deleteContact={deleteContactOf}
+      />
     </div>
   )
 }
