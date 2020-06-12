@@ -24,6 +24,16 @@
       "name": "Joe Biden",
       "number": "1-800-AME-RICA",
       "id": 6
+    },
+    {
+      "name": "Barack Obama",
+      "number": "1-800-DEM-CRAT",
+      "id": 7
+    },
+    {
+      "name": "Ghandi",
+      "number": "123-3123123-213",
+      "id": 8
     }
   ]
 }
