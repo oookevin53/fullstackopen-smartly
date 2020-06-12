@@ -11,6 +11,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ search, setSearch ] = useState('')
   const [ confirmMessage, setConfirmMessage ] = useState(null)
+  const [ messageColor, setMessageColor ] = useState("")
   
   useEffect(() => {
     contactService
@@ -50,7 +51,14 @@ const App = () => {
             .then(returnedContact => {
               setPersons(persons.map(person => person.id !== changedNumber.id ? person : returnedContact))
               setConfirmMessage(`Updated ${returnedContact.name}`)
+              setMessageColor("green")
               setTimeout(() => {setConfirmMessage(null)}, 5000)
+          })
+            .catch(error => {
+              setConfirmMessage(`Information of ${changedNumber.name} has already been removed from server`)
+              setMessageColor("red")
+              setTimeout(() => {setConfirmMessage(null)}, 5000)
+              setPersons(persons.filter(p => p.id !== changedNumber.id))
           })
       }
     } else {
@@ -61,6 +69,7 @@ const App = () => {
             setNewName('')
             setNewNumber('')
             setConfirmMessage(`Added ${returnedContact.name}`)
+            setMessageColor("green")
             setTimeout(() => {setConfirmMessage(null)}, 5000)
           })
     }
@@ -69,7 +78,8 @@ const App = () => {
   const deleteContactOf = (id, name) => {
     const result = window.confirm(`Delete ${name} ?`)
     if (result) {
-      contactService.remove(id)
+      contactService
+        .remove(id)
       setPersons(persons.filter(person => person.id !== id))
     }
   }
@@ -78,7 +88,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       {confirmMessage
-      ? <Notification message={confirmMessage} />
+      ? <Notification message={confirmMessage}  color={messageColor}/>
       : null}
       <Search search={search} handleSearch={handleSearch} />
       <h3>add a new</h3>
