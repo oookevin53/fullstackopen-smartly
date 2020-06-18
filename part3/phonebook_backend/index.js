@@ -57,16 +57,30 @@ const randomId = (min, max) => {
 
 app.post("/api/persons", (request, response) => {
     const body = request.body
-    
-    const person = {
-        name: body.name,
-        number: body.number,
-        id: randomId(1, 100)
-    }
 
-    persons = persons.concat(person)
-    
-    response.json(person)
+    if (!body.name) {
+        return response.status(400).json({
+            error: 'name missing'
+        })
+    } else if (!body.number) {
+        return response.status(400).json({
+            error: 'number missing'
+        })
+    } else if (persons.some(person => person.name === body.name)) {
+        return response.status(400).json({
+            error: 'name must be unique'
+        })
+    } else {
+        const person = {
+            name: body.name,
+            number: body.number,
+            id: randomId(1, 100)
+        }
+
+        persons = persons.concat(person)
+        
+        response.json(person)
+    }
 })
 
 const PORT = 3001
